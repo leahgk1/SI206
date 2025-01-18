@@ -1,0 +1,158 @@
+#Leah Kim, SI 206 HW01 
+#1/17/2025
+#I worked on this assignment alone, using ChatGPT to generate the Movie Recommendation System, choice of the project idea for this homework.
+
+
+import pandas as pd
+import json
+
+# Load the movie dataset from JSON and clean it based on iteration complexity
+def load_dataset(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            data = json.load(file)
+            movies = pd.DataFrame(data)
+            
+            # Cleaning for iteration 2 (e.g., handling new Runtime column)
+            if 'Runtime' in movies.columns:
+                movies['Runtime'] = pd.to_numeric(movies['Runtime'], errors='coerce')
+
+            # Cleaning for iteration 3 (e.g., missing values, mixed types)
+            movies['Year'] = pd.to_numeric(movies['Year'], errors='coerce')
+            movies['Rating'] = pd.to_numeric(movies['Rating'], errors='coerce')
+
+            # Cleaning for iteration 4 (e.g., duplicates, irrelevant columns)
+            if 'BoxOffice' in movies.columns:
+                movies = movies.drop(columns=['BoxOffice'], errors='ignore')
+
+            movies = movies.drop_duplicates(subset=['Title', 'Year', 'Genre'], keep='first')
+            movies = movies.dropna(subset=['Title', 'Genre', 'Year', 'Rating'])
+
+            # Standardize genres
+            if 'Genre' in movies.columns:
+                movies['Genre'] = movies['Genre'].str.replace("SciFi", "Sci-Fi", case=False)
+                movies['Genre'] = movies['Genre'].str.replace("Animatn", "Animation", case=False)
+
+            print("Dataset loaded and cleaned successfully.")
+            return movies
+    except FileNotFoundError:
+        print("Error: Dataset not found at the specified path.")
+        return None
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
+
+# Display sample data for user to understand available columns
+def display_sample_data(movies):
+    print("Sample data from the dataset:")
+    print(movies.head())
+
+# Get user preferences
+def get_user_preferences():
+    print("Please enter your preferences:")
+    genre = input("Select a genre (e.g., Sci-Fi, Romance): ").strip().capitalize()
+    try:
+        min_rating = float(input("Specify a minimum rating (e.g., 7.0): "))
+    except ValueError:
+        min_rating = 0.0
+        print("Invalid input for rating. Defaulting to 0.0.")
+    try:
+        release_year = int(input("Specify a minimum release year (e.g., 2000): "))
+    except ValueError:
+        release_year = 0
+        print("Invalid input for release year. Defaulting to 0.")
+    return genre, min_rating, release_year
+
+# Recommend movies based on user preferences
+def recommend_movies(movies, genre, min_rating, release_year):
+    try:
+        filtered_movies = movies[
+            (movies['Genre'].str.contains(genre, case=False, na=False)) &
+            (movies['Rating'] >= min_rating) &
+            (movies['Year'] >= release_year)
+        ]
+        if not filtered_movies.empty:
+            print("\nRecommended Movies:")
+            print(filtered_movies[['Title', 'Genre', 'Rating', 'Year', 'Actors', 'Runtime']])
+        else:
+            print("\nNo movies found matching your preferences.")
+    except KeyError as e:
+        print(f"Dataset is missing the required column: {e}")
+    except Exception as e:
+        print(f"An error occurred during filtering: {e}")
+
+# Add a new movie to the dataset
+def add_movie_to_dataset(movies):
+    print("Enter details of the movie you want to add:")
+    title = input("Title: ").strip()
+    genre = input("Genre: ").strip()
+    try:
+        rating = float(input("Rating (0-10): "))
+    except ValueError:
+        rating = 0.0
+        print("Invalid input for rating. Defaulting to 0.0.")
+    try:
+        release_year = int(input("Release Year: "))
+    except ValueError:
+        release_year = 0
+        print("Invalid input for release year. Defaulting to 0.")
+    actors = input("Actors (comma-separated): ").strip()
+    try:
+        runtime = int(input("Runtime (in minutes): "))
+    except ValueError:
+        runtime = None
+        print("Invalid input for runtime. Defaulting to None.")
+
+    new_movie = pd.DataFrame({
+        'Title': [title],
+        'Genre': [genre],
+        'Rating': [rating],
+        'Year': [release_year],
+        'Actors': [actors],
+        'Runtime': [runtime]
+    })
+
+    updated_movies = pd.concat([movies, new_movie], ignore_index=True)
+    print(f"Movie '{title}' added successfully!")
+    return updated_movies
+
+# Save the updated dataset to JSON
+def save_dataset(movies, file_path):
+    try:
+        movies_dict = movies.to_dict(orient='list')
+        with open(file_path, 'w') as file:
+            json.dump(movies_dict, file, indent=4)
+        print("Dataset saved successfully.")
+    except Exception as e:
+        print(f"An error occurred while saving the dataset: {e}")
+
+# Main program
+def main():
+    file_path = "/Users/leahkim/SI 206/movies_4.json"  # Update with your dataset path
+    movies = load_dataset(file_path)
+
+    if movies is not None:
+        display_sample_data(movies)
+
+        while True:
+            print("\nOptions:")
+            print("1. Get movie recommendations")
+            print("2. Add a new movie to the dataset")
+            print("3. Exit")
+
+            choice = input("Enter your choice (1/2/3): ").strip()
+
+            if choice == "1":
+                genre, min_rating, release_year = get_user_preferences()
+                recommend_movies(movies, genre, min_rating, release_year)
+            elif choice == "2":
+                movies = add_movie_to_dataset(movies)
+                save_dataset(movies, file_path)
+            elif choice == "3":
+                print("Exiting the program. Goodbye!")
+                break
+            else:
+                print("Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,38 @@
+{
+    "Title": [
+        "Inception",
+        "Inception",
+        "Interstelar",
+        "Harry Potter and the Sorcerer's Stone"
+    ],
+    "Genre": [
+        "Sci-Fi",
+        "Sci-Fi",
+        "Sci-Fi",
+        "Sci-Fi"
+    ],
+    "Year": [
+        2010.0,
+        2010.0,
+        2014.0,
+        2001.0
+    ],
+    "Rating": [
+        8.8,
+        8.8,
+        8.6,
+        7.0
+    ],
+    "Actors": [
+        "Leonardo DiCaprio, Joseph Gordon-Levitt",
+        null,
+        "Matthew McConaughey, Anne Hathaway",
+        "Daniel Radcliffe, Emma Watson"
+    ],
+    "Runtime": [
+        148.0,
+        148.0,
+        NaN,
+        152.0
+    ]
+}
