@@ -1,0 +1,148 @@
+# Your name: Leah Kim
+# Your student id: 
+# Your email: leahgk@umich.edu
+# List who or what you worked with on this homework: I worked on this assignment alone.
+ 
+# https://padlet.com/collemc/si206-brag-board-lyd5hjuniketoxb6 
+# https://docs.google.com/forms/d/e/1FAIpQLSco_CdSjDd1SZFtRxaf5UarJKjkyKWH1W3N9iYuftalkpUHtQ/viewform
+
+
+from turtle import *
+
+### WRITE ALL NEW FUNCTIONS HERE ###
+import turtle
+import random
+
+def draw_circle(t, fill_color, x, y, radius):
+    t.penup()
+    t.goto(x, y - radius)
+    t.pendown()
+    t.begin_fill()
+    t.fillcolor(fill_color)
+    t.circle(radius)
+    t.end_fill()
+
+def draw_rectangle(t, fill_color, x, y, width, height):
+    t.penup()
+    t.goto(x, y)
+    t.pendown()
+    t.begin_fill()
+    t.fillcolor(fill_color)
+    for _ in range(2):
+        t.forward(width)
+        t.left(90)
+        t.forward(height)
+        t.left(90)
+    t.end_fill()
+
+def draw_triangle(t, fill_color, x, y, side_length):
+    t.penup()
+    t.goto(x, y)
+    t.pendown()
+    t.begin_fill()
+    t.fillcolor(fill_color)
+    for _ in range(3):
+        t.forward(side_length)
+        t.left(120)
+    t.end_fill()
+
+def draw_snowflake(t, x, y, size):
+    t.penup()
+    t.goto(x, y)
+    t.pendown()
+    t.color("white")
+    for _ in range(8):
+        t.forward(size)
+        t.backward(size)
+        t.right(45)
+
+
+# Tree
+def draw_tree(t, x, y, scale=1):
+    #  the trunk
+    draw_rectangle(t, "brown", x, y, 10 * scale, 30 * scale)
+    #  the foliage
+    draw_triangle(t, "green", x - 15 * scale, y + 30 * scale, 40 * scale)
+    draw_triangle(t, "green", x - 10 * scale, y + 50 * scale, 30 * scale)
+    draw_triangle(t, "green", x - 5 * scale, y + 65 * scale, 20 * scale)
+
+
+def draw_winter_scene(t):
+    t.screen.bgcolor("lightblue")
+
+    draw_rectangle(t, "white", -400, -300, 800, 300)
+
+
+    draw_rectangle(t, "brown", -100, -150, 200, 150) 
+    draw_triangle(t, "darkred", -120, 0, 240)         # Roof
+
+    # Draw windows
+    draw_rectangle(t, "yellow", -75, -75, 50, 50)
+    draw_rectangle(t, "yellow", 25, -75, 50, 50)
+
+    # Draw the door
+    draw_rectangle(t, "darkblue", -15, -150, 30, 100)
+
+    # Snowman
+    draw_circle(t, "white", -200, -200, 30)  # Bottom circle
+    draw_circle(t, "white", -200, -160, 20)  # Middle circle
+    draw_circle(t, "white", -200, -130, 10)  # Head circle
+    draw_circle(t, "black", -205, -125, 2)   # Left eye
+    draw_circle(t, "black", -195, -125, 2)   # Right eye
+    draw_circle(t, "orange", -200, -135, 2)  # Nose
+
+    # snowflakes
+    for _ in range(10):
+        x = random.randint(-300, 300)
+        y = random.randint(50, 300)
+        draw_snowflake(t, x, y, 20)
+
+    # Draw trees on the ground
+    draw_tree(t, -250, -200, scale=0.9)  
+    draw_tree(t, -300, -250, scale=0.7)  
+# Function to draw the initials "LK"
+def draw_l(t, x, y):
+    t.penup()
+    t.goto(x, y)
+    t.pendown()
+    t.pensize(5)
+    t.color("purple")
+    t.goto(x, y - 30)
+    t.goto(x + 20, y - 30)
+
+def draw_k(t, x, y):
+    t.penup()
+    t.goto(x, y)
+    t.pendown()
+    t.pensize(5)
+    t.color("purple")
+    t.goto(x, y - 30)
+    t.penup()
+    t.goto(x, y - 15)
+    t.pendown()
+    t.goto(x + 15, y)
+    t.penup()
+    t.goto(x, y - 15)
+    t.pendown()
+    t.goto(x + 15, y - 30)
+
+    # Sign with initials "LK"
+    draw_l(t, 200, -250)
+    draw_k(t, 230, -250)
+
+    # Hide the turtle icon
+    t.hideturtle()
+
+def main():
+    # Set up the screen and turtle
+    screen = turtle.Screen()
+    screen.setup(width=800, height=800)
+    t = turtle.Turtle()
+    t.speed(0) 
+
+    draw_winter_scene(t)
+    screen.exitonclick()
+
+if __name__ == "__main__":
+    main()
+
