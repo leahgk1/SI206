@@ -1,0 +1,55 @@
+# Your name: Leah Kim
+# Your student id:
+# Your email: leahgk@umich.edu
+# List of who or what you worked with on this homework: self
+# If you used Generative AI, say that you used it and also how you used it.
+
+# Tip: """use docstrings""" for codes to be legible - lecture 1/30 
+## Import any necessary modules
+import random
+
+
+
+## Define class
+class MagicEightBall:
+    ## define the __init__ method
+    def __init__(self, answers):
+        self.answers_list = answers
+        self.previous_questions = []
+        self.previous_answers = []
+
+    #     pass
+        
+
+    ## define the __str__ method
+    # def __str__(self):
+    #    pass
+
+    ## define get_fortune method
+    
+
+    ## define play_game method
+    
+
+    ## define print_answer_frequencies method
+    
+
+# Main function
+# def main():
+    # 1. Define the possible answers into a list: 
+
+    # 2. Create a MagicEightBall object
+
+    # 3. Print the MagicEightBall object 
+
+    # 4. Initiate the game play using the play_game() method
+
+    # 5. Call print_answer_frequencies()
+
+    # 6. Print the MagicEightBall object 
+
+
+
+# Run the main function if the file is executed directly
+#if __name__ == "__main__":
+   # main()
